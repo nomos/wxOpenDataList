@@ -1,16 +1,17 @@
+const Type = {
+    Horizontal:0,
+    Vertical:1
+}
+
 var WxOpenDataList = function () {
     this.dirtyFlag = false;
     this.playerAvatarUrl = '';
     this.data = {};
     this.style = {};
-    this.type = Consts.ListType.Embed;
-    this.listRenderer = new ListRenderer();
 
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
     ctx.fillRect(0,0,1000,1000);
-
-
     this.init();
 };
 
@@ -32,16 +33,13 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
 
 WxOpenDataList.prototype.render = function () {
     this.clear();
-    this.listRenderer.render();
 };
 
 WxOpenDataList.prototype.clear = function () {
-    this.listRenderer.reset();
 };
 
 WxOpenDataList.prototype.setStyle = function (style) {
     this.style = style;
-    this.listRenderer.setStyle(style);
 };
 
 WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
@@ -61,7 +59,6 @@ WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
 };
 
 WxOpenDataList.prototype.fetchFriend = function (type,key) {
-    this.listRenderer.setStyle(this.style[type]);
     window.wx&&wx.getFriendCloudStorage({
         KeyList:[key],
         success:function (res) {
@@ -75,7 +72,6 @@ WxOpenDataList.prototype.fetchFriend = function (type,key) {
 };
 
 WxOpenDataList.prototype.fetchTest = function (type) {
-    this.listRenderer.setStyle(this.style[type]);
 };
 
 WxOpenDataList.prototype.listen = function () {
