@@ -1,8 +1,10 @@
+
 var ListRenderer = function () {
 
+    render:function () {
+
+    }
 };
-
-
 
 var WxOpenDataList = function () {
     this.dirtyFlag = false;
@@ -20,7 +22,7 @@ WxOpenDataList.prototype.init = function () {
 };
 
 WxOpenDataList.prototype.fetchSelfInfo = function () {
-    wx&&wx.getUserInfo({
+    window.wx&&wx.getUserInfo({
         openIdList: ["selfOpenId"],
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
@@ -46,7 +48,7 @@ WxOpenDataList.prototype.setStyle = function (style) {
 
 WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
     this.listRenderer.setStyle(this.style[type]);
-    wx&&wx.getGroupCloudStorage({
+    window.wx&&wx.getGroupCloudStorage({
         shareTicket:shareTicket,
         keyList:[key],
         success:function (res) {
@@ -62,7 +64,7 @@ WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
 
 WxOpenDataList.prototype.fetchFriend = function (type,key) {
     this.listRenderer.setStyle(this.style[type]);
-    wx&&wx.getFriendCloudStorage({
+    window.wx&&wx.getFriendCloudStorage({
         KeyList:[key],
         success:function (res) {
 
@@ -76,7 +78,7 @@ WxOpenDataList.prototype.fetchFriend = function (type,key) {
 
 WxOpenDataList.prototype.listen = function () {
     console.log('startListen');
-    wx&&wx.onMessage(function (msg) {
+    window.wx&&wx.onMessage(function (msg) {
         switch (msg.action) {
             case Consts.DomainAction.FetchFriend:
                 this.fetchFriend(msg.data.type,msg.data.key);
