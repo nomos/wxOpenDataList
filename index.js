@@ -1,184 +1,8 @@
-var Consts = {
-    DomainAction: {
-        FetchFriend: "FetchFriend",
-        FetchGroup: "FetchGroup",
-        Paging: "Paging",
-        Scrolling: "Scrolling",
-        Style: "Style"
-    },
-    ListType:{
-        Embed:"Embed",
-        Horizontal:"Horizontal",
-        Vertical:"Vertical"
-    }
+var ListRenderer = function () {
+
 };
 
-var Item = function (scrollview,ctx,data,index) {
-    this.scrollView = scrollview;
-    this.ctx = ctx;
-    this.data = data;
-    this.avatar = data.avatarUrl;
-    this.text  = data.text;
 
-
-
-
-    this.updateTransform = function () {
-
-    };
-
-    this.render = function () {
-        this.avatar&&this.avatar.render();
-        this.text&&this.text.render();
-    };
-};
-
-var Avatar = function (item,avatar) {
-    this.item = item;
-    this.avatarUrl = avatar;
-    this.style = item.getAvatarStyle();
-
-    this.updateTransform = function () {
-        this.x = this.item.x+this.item.scrollView.x+this.style.x;
-        this.y = this.item.y+this.item.scrollView.y+this.style.y;
-    };
-
-    this.render = function () {
-        if (!this.item.ctx.isWithIn(this.x,this.y,this.w,this.h)) {
-            return;
-        }
-        this.updateTransform();
-        this.image = wx.createImage();
-        this.image.src = this.avatarUrl;
-        this.image.onLoad = function () {
-            this.item.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
-        }.bind(this);
-
-    };
-};
-
-var Text = function (item,str) {
-    this.item = item;
-    this.str = str;
-    this.style = item.ctx.getTextStyle();
-
-    this.updateTransform = function () {
-        this.x = this.item.x+this.item.scrollView.x+this.style.x;
-        this.y = this.item.y+this.item.scrollView.y+this.style.y;
-    };
-
-    this.render = function () {
-        if (!this.item.ctx.isWithIn(this.x,this.y,str.length*10,this.style.size)) {
-            return;
-        }
-        this.item.ctx.fillStyle = this.style.fillStyle;
-        this.item.ctx.textAlign = this.style.textAlign;
-        this.item.ctx.baseLine = this.style.baseLine;
-        this.item.ctx.font = ""+this.style.size+"px "+this.style.font;
-        this.item.ctx.fillText(this.str,this.x,this.y);
-    }
-};
-
-var ScrollView = function (style,x,y) {
-    if (style) {
-        this.style = style;
-        this.x = x;
-        this.y = y;
-        this.w=style.w;
-        this.h=style.h;
-    }
-
-    this.content = {};
-    this.content.x = 0;
-    this.content.y = 0;
-    this.content.width = 0;
-    this.content.height = 0;
-    this.items = [];
-    this.offset = 0;
-    this.offsetMin = 0;
-    this.offsetMax = 0;
-
-    this.sharedCanvas = wx.getSharedCanvas();
-    this.ctx = this.sharedCanvas.getContext('2d');
-    this.ctx.canvas.width = 720;
-    this.ctx.canvas.height = 1280;
-    this.ctx.fillRect(0,0,720,1280);
-
-
-    this.setPosition = function (x,y) {
-        this.x = x;
-        this.y = y;
-    };
-    this.setStyle = function (style) {
-        this.style = style;
-        this.w=style.w;
-        this.h=style.h;
-        if (this.items&&this.items.length>0) {
-            this.reset();
-            this.render();
-        }
-    };
-
-    this.setSelfInfo = function (data) {
-        console.log("setSelfInfo");
-        this.selfAvatarUrl = data.avatarUrl;
-        this.selfNickName = data.nickName;
-
-        this.image = wx.createImage();
-        this.image.src = "wxOpenDataList/fruit0.png";
-        console.log(this.ctx);
-        this.image.onload = function () {
-            this.ctx.drawImage(this.image,0,0,30,30);
-            console.log("drawImage",this.image,'width',this.image.width,'height',this.image.height);
-        }.bind(this);
-
-
-    };
-
-    this.init = function (data) {
-        this.reset();
-        this.initWithData(data)
-    };
-
-    this.initWithData = function (data) {
-        this.reset();
-        for (var i=0;i<data.length;i++) {
-            this.addItem(data[i],i);
-        }
-    };
-
-    this.addItem = function (data,index) {
-        var item = new Item(this,this.ctx,data,index);
-        this.items.push(item);
-    };
-
-    this.reset = function () {
-        this.items = [];
-        this.scrollView.clear();
-    };
-
-    this.render = function () {
-        for (var i=0;i<this.items.length;i++) {
-            this.items[i]&&this.items[i].render();
-        }
-    };
-
-    this.isWithIn = function (x,y,w,h) {
-        return x
-    };
-
-    this.scroll = function (delta) {
-
-    };
-
-    this.getTextStyle = function () {
-        return this.style['text'];
-    };
-
-    this.getAvatarStyle = function () {
-        return this.style['avatar'];
-    };
-};
 
 var WxOpenDataList = function () {
     this.dirtyFlag = false;
@@ -186,7 +10,7 @@ var WxOpenDataList = function () {
     this.data = {};
     this.style = {};
     this.type = Consts.ListType.Embed;
-    this.scrollView = new ScrollView();
+    this.listRenderer = new ListRenderer();
     this.init();
 };
 
@@ -201,27 +25,27 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
-            this.scrollView.setSelfInfo(res.data[0]);
+            this.listRenderer.setSelfInfo(res.data[0]);
         }.bind(this)
     });
 };
 
 WxOpenDataList.prototype.render = function () {
     this.clear();
-    this.scrollView.render();
+    this.listRenderer.render();
 };
 
 WxOpenDataList.prototype.clear = function () {
-    this.scrollView.reset();
+    this.listRenderer.reset();
 };
 
 WxOpenDataList.prototype.setStyle = function (style) {
     this.style = style;
-    this.scrollView.setStyle(style);
+    this.listRenderer.setStyle(style);
 };
 
 WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
-    this.scrollView.setStyle(this.style[type]);
+    this.listRenderer.setStyle(this.style[type]);
     wx&&wx.getGroupCloudStorage({
         shareTicket:shareTicket,
         keyList:[key],
@@ -237,7 +61,7 @@ WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
 };
 
 WxOpenDataList.prototype.fetchFriend = function (type,key) {
-    this.scrollView.setStyle(this.style[type]);
+    this.listRenderer.setStyle(this.style[type]);
     wx&&wx.getFriendCloudStorage({
         KeyList:[key],
         success:function (res) {
@@ -248,14 +72,6 @@ WxOpenDataList.prototype.fetchFriend = function (type,key) {
         }
     });
 
-};
-
-WxOpenDataList.prototype.paging = function (page) {
-    this.scrollView.setPageIndex(page);
-};
-
-WxOpenDataList.prototype.scrolling = function (delta) {
-    this.scrollView.scroll(delta);
 };
 
 WxOpenDataList.prototype.listen = function () {
