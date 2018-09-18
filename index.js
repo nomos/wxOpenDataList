@@ -100,7 +100,9 @@ var ScrollView = function (style,x,y) {
 
     this.sharedCanvas = wx.getSharedCanvas();
     this.ctx = this.sharedCanvas.getContext('2d');
-    this.ctx.fillRect(0,0,100,100);
+    this.ctx.canvas.width = 720;
+    this.ctx.canvas.height = 1280;
+    this.ctx.fillRect(0,0,720,1280);
 
 
     this.setPosition = function (x,y) {
@@ -126,7 +128,7 @@ var ScrollView = function (style,x,y) {
         this.image.src = "wxOpenDataList/fruit0.png";
         console.log(this.ctx);
         this.image.onload = function () {
-            this.ctx.drawImage(this.image,0,0,100,100);
+            this.ctx.drawImage(this.image,0,0,30,30);
             console.log("drawImage",this.image,'width',this.image.width,'height',this.image.height);
         }.bind(this);
 
