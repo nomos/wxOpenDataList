@@ -80,11 +80,14 @@ var Text = function (item,str) {
 };
 
 var ScrollView = function (style,x,y) {
-    this.style = style;
-    this.x = x;
-    this.y = y;
-    this.w=style.w;
-    this.h=style.h;
+    if (style) {
+        this.style = style;
+        this.x = x;
+        this.y = y;
+        this.w=style.w;
+        this.h=style.h;
+    }
+
     this.content = {};
     this.content.x = 0;
     this.content.y = 0;
@@ -94,9 +97,14 @@ var ScrollView = function (style,x,y) {
     this.offset = 0;
     this.offsetMin = 0;
     this.offsetMax = 0;
-
+    this.setPosition = function (x,y) {
+        this.x = x;
+        this.y = y;
+    };
     this.setStyle = function (style) {
         this.style = style;
+        this.w=style.w;
+        this.h=style.h;
         if (this.items&&this.items.length>0) {
             this.reset();
             this.render();
