@@ -118,15 +118,19 @@ var ScrollView = function (style,x,y) {
     };
 
     this.setSelfInfo = function (data) {
+        console.log("setSelfInfo");
         this.selfAvatarUrl = data.avatarUrl;
         this.selfNickName = data.nickName;
 
         this.image = wx.createImage();
-        this.image.src = this.selfAvatarUrl;
-        this.image.onLoad = function () {
-            console.log("drawSelfUrl");
-            this.item.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+        this.image.src = "./fruit0.png";
+        console.log(this.ctx);
+        this.image.onload = function () {
+            this.ctx.drawImage(this.image,0,0,1000,1000);
+            console.log("drawImage",this.image,'width',this.image.width,'height',this.image.height);
         }.bind(this);
+
+
     };
 
     this.init = function (data) {
