@@ -1,11 +1,3 @@
-
-var ListRenderer = function () {
-
-    render:function () {
-
-    }
-};
-
 var WxOpenDataList = function () {
     this.dirtyFlag = false;
     this.playerAvatarUrl = '';
@@ -13,6 +5,12 @@ var WxOpenDataList = function () {
     this.style = {};
     this.type = Consts.ListType.Embed;
     this.listRenderer = new ListRenderer();
+
+    this.canvas = wx.getSharedCanvas();
+    this.ctx = this.canvas.getContext('2d');
+    ctx.fillRect(0,0,1000,1000);
+
+
     this.init();
 };
 
@@ -74,6 +72,10 @@ WxOpenDataList.prototype.fetchFriend = function (type,key) {
         }
     });
 
+};
+
+WxOpenDataList.prototype.fetchTest = function (type) {
+    this.listRenderer.setStyle(this.style[type]);
 };
 
 WxOpenDataList.prototype.listen = function () {
