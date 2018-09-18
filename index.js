@@ -115,6 +115,8 @@ var ScrollView = function (style,x,y) {
         this.reset();
         this.sharedCanvas = wx.getSharedCanvas();
         this.ctx = this.shareCanvas.getContext('2d');
+        this.ctx.width = 1000;
+        this.ctx.height = 1000;
         this.ctx.rect(0,0,300,300);
         this.ctx.fill();
         this.initWithData(data)
