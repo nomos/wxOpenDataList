@@ -123,7 +123,7 @@ var ScrollView = function (style,x,y) {
         this.selfNickName = data.nickName;
 
         this.image = wx.createImage();
-        this.image.src = "./fruit0.png";
+        this.image.src = "wxOpenDataList/fruit0.png";
         console.log(this.ctx);
         this.image.onload = function () {
             this.ctx.drawImage(this.image,0,0,1000,1000);
