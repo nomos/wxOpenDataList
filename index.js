@@ -51,7 +51,7 @@ var Avatar = function (item,avatar) {
         this.image = wx.createImage();
         this.image.src = this.avatarUrl;
         this.image.onLoad = function () {
-              this.item.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+            this.item.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
         }.bind(this);
 
     };
@@ -97,6 +97,12 @@ var ScrollView = function (style,x,y) {
     this.offset = 0;
     this.offsetMin = 0;
     this.offsetMax = 0;
+
+    this.sharedCanvas = wx.getSharedCanvas();
+    this.ctx = this.sharedCanvas.getContext('2d');
+
+
+
     this.setPosition = function (x,y) {
         this.x = x;
         this.y = y;
@@ -111,11 +117,20 @@ var ScrollView = function (style,x,y) {
         }
     };
 
+    this.setSelfInfo = function (data) {
+        this.selfAvatarUrl = data.avatarUrl;
+        this.selfNickName = data.nickName;
+
+        this.image = wx.createImage();
+        this.image.src = this.selfAvatarUrl;
+        this.image.onLoad = function () {
+            console.log("drawSelfUrl");
+            this.item.ctx.drawImage(this.image,this.x,this.y,this.w,this.h);
+        }.bind(this);
+    };
+
     this.init = function (data) {
         this.reset();
-        this.sharedCanvas = wx.getSharedCanvas();
-        this.ctx = this.shareCanvas.getContext('2d');
-        this.ctx.fillRect(0,0,300,300);
         this.initWithData(data)
     };
 
@@ -180,7 +195,8 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
-        }
+            this.scrollView.setSelfInfo(res.data[0]);
+        }.bind(this)
     });
 };
 
