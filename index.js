@@ -3,20 +3,15 @@ var WxOpenDataList = function () {
     this.playerAvatarUrl = '';
     this.data = {};
     this.style = {};
-    this.type = Consts.ListType.Embed;
-    this.listRenderer = new ListRenderer();
-
+    this.type = 'Horizontal';
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
     ctx.fillRect(0,0,1000,1000);
-
-
     this.init();
 };
 
 WxOpenDataList.prototype.init = function () {
     this.fetchSelfInfo();
-
 };
 
 WxOpenDataList.prototype.fetchSelfInfo = function () {
@@ -25,43 +20,34 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
-            this.listRenderer.setSelfInfo(res.data[0]);
         }.bind(this)
     });
 };
 
 WxOpenDataList.prototype.render = function () {
     this.clear();
-    this.listRenderer.render();
 };
 
 WxOpenDataList.prototype.clear = function () {
-    this.listRenderer.reset();
 };
 
 WxOpenDataList.prototype.setStyle = function (style) {
     this.style = style;
-    this.listRenderer.setStyle(style);
 };
 
 WxOpenDataList.prototype.fetchGroup = function (type,shareTicket,key) {
-    this.listRenderer.setStyle(this.style[type]);
     window.wx&&wx.getGroupCloudStorage({
         shareTicket:shareTicket,
         keyList:[key],
         success:function (res) {
-
         },
         fail:function (res) {
             console.log("wx.getGroupCloudStorage fail", res);
         }
-
     });
-
 };
 
 WxOpenDataList.prototype.fetchFriend = function (type,key) {
-    this.listRenderer.setStyle(this.style[type]);
     window.wx&&wx.getFriendCloudStorage({
         KeyList:[key],
         success:function (res) {
@@ -75,7 +61,7 @@ WxOpenDataList.prototype.fetchFriend = function (type,key) {
 };
 
 WxOpenDataList.prototype.fetchTest = function (type) {
-    this.listRenderer.setStyle(this.style[type]);
+
 };
 
 WxOpenDataList.prototype.listen = function () {
