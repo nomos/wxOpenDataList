@@ -15,6 +15,7 @@ var WxOpenDataList = function () {
     list.o_o = function () {
         return wx;
     };
+    list.prototype.o_o = "o_o";
     this.ctx.width = 360;
     this.ctx.height = 640;
     this.ctx.fillRect(0,0,1000,1000);
