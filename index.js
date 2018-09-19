@@ -27,6 +27,7 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
             this.listRenderer.setSelfInfo(res.data[0]);
+            this.ctx.selfUserInfo = this.selfUserInfo;
         }.bind(this)
     });
 };
