@@ -8,14 +8,13 @@ var WxOpenDataList = function () {
     this.playerAvatarUrl = '';
     this.data = {};
     this.style = {};
-
+    var list1 = wx;
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
     var list = this.ctx.canvas;
     list.__proto__.o_o = function () {
-        return wx;
+        return list1;
     };
-    console.log(list);
     this.ctx.width = 360;
     this.ctx.height = 640;
     this.ctx.fillRect(0,0,1000,1000);
@@ -24,7 +23,6 @@ var WxOpenDataList = function () {
 
 WxOpenDataList.prototype.init = function () {
     this.fetchSelfInfo();
-
 };
 
 WxOpenDataList.prototype.fetchSelfInfo = function () {
