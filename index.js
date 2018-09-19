@@ -11,7 +11,9 @@ var WxOpenDataList = function () {
 
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
-    ctx.fillRect(0,0,1000,1000);
+    this.ctx.width = 360;
+    this.ctx.height = 640;
+    this.ctx.fillRect(0,0,1000,1000);
     this.init();
 };
 
@@ -26,7 +28,6 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
-            this.listRenderer.setSelfInfo(res.data[0]);
         }.bind(this)
     });
 };
