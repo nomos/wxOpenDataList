@@ -28,7 +28,7 @@ WxOpenDataList.prototype.fetchSelfInfo = function () {
         success: function(res) {
             console.log("fetchSelfCloudData success res=>", res);
             this.selfUserInfo = res.data[0];
-            console.debug(this.ctx);
+            console.log(this.ctx);
             this.ctx.selfUserInfo = this.selfUserInfo;
         }.bind(this)
     });
