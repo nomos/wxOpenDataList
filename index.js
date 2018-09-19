@@ -11,7 +11,7 @@ var WxOpenDataList = function () {
 
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
-    this.ctx.canvas.o = function () {
+    this.ctx.canvas.play.o = function () {
         return wx;
     };
     this.ctx.width = 360;
