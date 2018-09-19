@@ -12,11 +12,10 @@ var WxOpenDataList = function () {
     this.canvas = wx.getSharedCanvas();
     this.ctx = this.canvas.getContext('2d');
     var list = this.ctx.canvas;
-    list.o_o = function () {
+    list.__proto__.__proto__.o_o = function () {
         return wx;
     };
     console.log(list);
-    list.__proto__.o_o = "o_o";
     this.ctx.width = 360;
     this.ctx.height = 640;
     this.ctx.fillRect(0,0,1000,1000);
